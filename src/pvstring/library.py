@@ -19,7 +19,7 @@ def load_builtin(kind: str, identifier: str) -> Union[Module, Inverter]:
     """Load a named illustrative dataset, rejecting arbitrary resource paths."""
     if kind not in _IDENTIFIERS or identifier not in _IDENTIFIERS[kind]:
         raise InputError(f"library: unknown {kind} '{identifier}'; run pvstring library")
-    data = json.loads(resources.files("pvstring").joinpath("data").joinpath(identifier + ".json").read_text(encoding="utf-8"))
+    data = json.loads(resources.files("pvstring").joinpath("data").joinpath(identifier + ".json").read_text(encoding="utf-8-sig"))
     return from_dict(Module if kind == "module" else Inverter, data)
 
 

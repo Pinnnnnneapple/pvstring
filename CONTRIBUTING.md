@@ -1,6 +1,6 @@
 # Contributing
 
-Use Python 3.9 or newer. The runtime must remain standard-library-only; pytest
+Use Python 3.10 or newer. The runtime must remain standard-library-only; pytest
 is a development dependency. From the repository root:
 
 ```sh

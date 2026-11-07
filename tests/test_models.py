@@ -33,17 +33,17 @@ def site(**changes):
     return Site(**values)
 
 
-@pytest.mark.parametrize("value", [-0.27, "-0.27%/°C", "-0.27 % / degC", "-0.27%/C", " -2.7e-1 %/DEGC "])
+@pytest.mark.parametrize("value", [-0.27, "-0.27%/°C", "-0.27%/ºC", "-0.27 % / degC", "-0.27%/C", " -2.7e-1 %/DEGC ", "-0.27%/K", " -2.7e-1 % / k "])
 def test_relative_coefficient_units(value):
     assert parse_coefficient(value) == pytest.approx(-0.0027)
 
 
-@pytest.mark.parametrize("value", ["-0.134 V/°C", "-0.134 V/degC", "-0.134 v/C"])
+@pytest.mark.parametrize("value", ["-0.134 V/°C", "-0.134 V/ºC", "-0.134 V/degC", "-0.134 v/C", "-0.134 V/K", " -1.34e-1 v / k "])
 def test_absolute_coefficient_uses_reference_voltage(value):
     assert parse_coefficient(value, 50) == pytest.approx(-0.134 / 50)
 
 
-@pytest.mark.parametrize("value", ["-0.27", "-0.27 A/°C", "-0.27 W/degC", "-0.27%/K", "-0.27V", "nan%/C", "inf%/C", "-0.27%/C extra", ""])
+@pytest.mark.parametrize("value", ["-0.27", "-0.27 A/°C", "-0.27 W/degC", "-0.27%/°K", "-0.27%/F", "-0.27V", "nan%/C", "inf%/C", "-0.27%/C extra", ""])
 def test_bad_coefficient_units_explain_supported_forms(value):
     with pytest.raises(InputError, match="coefficient:.*%/°C"):
         parse_coefficient(value)

@@ -37,15 +37,16 @@ def parse_coefficient(value: Coefficient, reference_voltage: Optional[float] = N
     For example, ``-0.27`` and ``'-0.27%/°C'`` both yield ``-0.0027``.
     ``'-0.134 V/°C'`` requires the relevant STC reference voltage and yields
     ``-0.134 / reference_voltage``. Unitless numeric strings are rejected.
+    Temperature intervals accept °C, ºC, degC, C, or K with the same scale.
     """
     if isinstance(value, str):
         match = re.fullmatch(
-            r"\s*([+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?)\s*(%|V)\s*/\s*(?:°\s*C|degC|C)\s*",
+            r"\s*([+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?)\s*(%|V)\s*/\s*(?:[°º]\s*C|degC|C|K)\s*",
             value,
             flags=re.IGNORECASE,
         )
         if not match:
-            raise InputError("coefficient: use a number in %/°C or a string such as '-0.27%/°C' or '-0.134 V/°C'")
+            raise InputError("coefficient: use a number in %/°C or a string such as '-0.27%/°C' or '-0.134 V/°C'; temperature units: °C, ºC, degC, C, K")
         number = float(match.group(1))
         if not math.isfinite(number):
             raise InputError("coefficient: expected a finite number")

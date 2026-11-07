@@ -184,6 +184,10 @@ def _suggest(args: argparse.Namespace, module: Module, inverter: Inverter, site:
 
 def main(argv: Optional[Sequence[str]] = None) -> int:
     """Run the CLI, returning 0 pass, 1 warnings, 2 failures, or 3 input/I/O error."""
+    # Legacy console code pages may not represent every report/help character.
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(errors="replace")
     try:
         args = _parser().parse_args(argv)
         if args.command == "library":

@@ -44,9 +44,9 @@ def _constant(value: str) -> None:
 
 
 def load_json(path: Union[str, Path], model: Type[Model]) -> Model:
-    """Read a UTF-8 JSON datasheet/site/array and report contextual input errors."""
+    """Read UTF-8 JSON with an optional BOM and report contextual input errors."""
     try:
-        with Path(path).open(encoding="utf-8") as handle:
+        with Path(path).open(encoding="utf-8-sig") as handle:
             data = json.load(handle, object_pairs_hook=_pairs, parse_constant=_constant)
         return from_dict(model, data)
     except (OSError, UnicodeError, ValueError, RecursionError) as error:

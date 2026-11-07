@@ -1,7 +1,8 @@
 # Input reference
 
 Inputs use JSON objects with snake_case keys. Unknown fields are rejected;
-spelling mistakes are not silently ignored. Numeric runtime values must be
+spelling mistakes are not silently ignored. Files must use UTF-8; a leading
+UTF-8 BOM is accepted. Numeric runtime values must be
 finite: NaN and positive or negative infinity are invalid. Use JSON numbers,
 not unit-bearing strings, except for the temperature coefficients described
 below. All powers are W, voltages V, currents A, irradiances W/m², temperatures
@@ -33,8 +34,10 @@ percent string such as `"-0.27%/°C"`, or an absolute string such as
 `"-0.134 V/°C"`. `gamma_vmp` supports the same relative or absolute voltage
 forms. Absolute coefficients are normalized by `voc` or `vmp`, respectively.
 `alpha_isc` and `gamma_pmax` accept numeric percent per °C or explicit percent
-strings. Temperature unit spellings `°C`, `degC`, and `C` are accepted in
-coefficient strings, case-insensitively. Unitless numeric strings and units
+strings. Temperature unit spellings `°C`, `ºC`, `degC`, `C`, and `K` are accepted
+in coefficient strings, case-insensitively. A temperature interval of 1 K
+equals 1 °C, so `%/K` and `V/K` use the same conversion as `%/°C` and `V/°C`.
+Unitless numeric strings and units
 such as A/°C or W/°C are rejected. A numeric `-0.27` is not `-0.27 V/°C` and is not a fractional
 coefficient of `-0.27 /°C`. `gamma_pmax` does not determine `gamma_vmp`.
 Require positive electrical ratings, `vmp < voc`, and `imp <= isc`.

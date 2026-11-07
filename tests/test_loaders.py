@@ -33,9 +33,23 @@ def test_templates_roundtrip(tmp_path, kind):
     assert model.name == data["name"]
 
 
+@pytest.mark.parametrize("bom", [b"", b"\xef\xbb\xbf"], ids=["utf8", "utf8-bom"])
+@pytest.mark.parametrize("kind", ["module", "inverter", "site"])
+def test_utf8_datasheet_bytes_roundtrip(tmp_path, kind, bom):
+    data = template(kind)
+    data["name"] = "Datasheet – 25 °C / 模块"
+    if kind == "module":
+        data["beta_voc"] = "-0.27%/°C"
+    path = tmp_path / (kind + ".json")
+    path.write_bytes(bom + json.dumps(data, ensure_ascii=False).encode("utf-8"))
+    loader = {"module": load_module, "inverter": load_inverter, "site": load_site}[kind]
+    loaded = loader(path)
+    assert asdict(loaded) == data
+
+
 def test_array_roundtrip(tmp_path):
     path = tmp_path / "array.json"
-    path.write_text('{"modules_per_string": 8, "strings_per_mppt": [1, 0]}')
+    path.write_text('{"modules_per_string": 8, "strings_per_mppt": [1, 0]}', encoding="utf-8")
     assert load_array(path) == Array(8, (1, 0))
 
 

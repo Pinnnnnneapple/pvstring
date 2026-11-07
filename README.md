@@ -4,7 +4,7 @@
 
 [![CI](https://github.com/Pinnnnnneapple/pvstring/actions/workflows/ci.yml/badge.svg)](https://github.com/Pinnnnnneapple/pvstring/actions/workflows/ci.yml)
 [![MIT license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Python 3.9–3.13](https://img.shields.io/badge/python-3.9%20%E2%80%93%203.13-blue.svg)](pyproject.toml)
+[![Python 3.10–3.14](https://img.shields.io/badge/python-3.10%20%E2%80%93%203.14-blue.svg)](pyproject.toml)
 
 ## Why
 
@@ -42,7 +42,7 @@ from Python or an automated design pipeline.
 
 ## Install
 
-Python **3.9 or newer**:
+Python **3.10 or newer**:
 
 ```sh
 pip install git+https://github.com/Pinnnnnneapple/pvstring
@@ -323,7 +323,7 @@ actual design. Use at your own risk; see the MIT warranty disclaimer.**
 PYTHONPATH=src python3 -m pytest -q
 ```
 
-CI covers Python 3.9–3.13 on Ubuntu, Windows, and macOS, installs the package,
+CI covers Python 3.10–3.14 on Ubuntu, Windows, and macOS, installs the package,
 runs the tests, and checks the residential CLI example. Tests cover hand
 calculations, coefficient units, factor-table boundaries, current and fuse
 rules, feasible-option ranking, input errors, CLI exit codes, and escaped

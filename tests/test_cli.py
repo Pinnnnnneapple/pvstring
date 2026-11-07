@@ -73,7 +73,7 @@ def test_reports_all_formats(tmp_path, capsys):
     assert main(PASS + ["--html", str(html), "--md", str(md), "--json", str(json_path)]) == 0
     assert "<svg" in html.read_text(encoding="utf-8")
     assert "| Check |" in md.read_text(encoding="utf-8")
-    data = json.loads(json_path.read_text())
+    data = json.loads(json_path.read_text(encoding="utf-8"))
     assert data["status"] == "PASS"
     assert data["array"]["strings_per_mppt"] == [1, 1]
     assert data["metrics"]["dc_power"] == 6560
@@ -190,17 +190,36 @@ def test_help_and_version(args, text, capsys):
 
 def test_python_module_entrypoint():
     environment = dict(os.environ, PYTHONPATH=str(ROOT / "src"))
-    completed = subprocess.run([sys.executable, "-m", "pvstring", "--version"], env=environment, capture_output=True, text=True, check=False)
+    completed = subprocess.run([sys.executable, "-m", "pvstring", "--version"], env=environment, capture_output=True, text=True, encoding="utf-8", check=False)
     assert completed.returncode == 0
     assert completed.stdout.strip() == "pvstring 0.1.0"
 
 
+@pytest.mark.parametrize("encoding", ["ascii", "cp1252", "cp437"])
+@pytest.mark.parametrize("arguments,exit_code,expected", [
+    (PASS, 0, "pvstring"),
+    (["check", "--help"], 0, "Override lowest design ambient"),
+    (["show-template", "module"], 0, "beta_voc"),
+    (["unknown-°模"], 3, "input error:"),
+])
+def test_legacy_console_encoding(encoding, arguments, exit_code, expected):
+    environment = dict(os.environ, PYTHONPATH=str(ROOT / "src"),
+                       PYTHONIOENCODING=encoding + ":strict")
+    completed = subprocess.run([sys.executable, "-m", "pvstring"] + arguments,
+                               env=environment, capture_output=True, text=True,
+                               encoding=encoding, check=False)
+    assert completed.returncode == exit_code
+    output = completed.stderr if exit_code == 3 else completed.stdout
+    assert expected in output
+    assert "Traceback" not in completed.stderr
+
+
 @pytest.mark.parametrize("command", ["range", "suggest"])
 def test_infeasible_range_or_suggestions_exit_two(tmp_path, command, capsys):
-    data = json.loads((EXAMPLE / "inverter.json").read_text())
+    data = json.loads((EXAMPLE / "inverter.json").read_text(encoding="utf-8"))
     data["start_voltage"] = 600  # Startup needs more modules than cold Voc permits.
     path = tmp_path / "inverter.json"
-    path.write_text(json.dumps(data))
+    path.write_text(json.dumps(data), encoding="utf-8")
     arguments = [command] + INPUTS.copy()
     arguments[arguments.index("--inverter") + 1] = str(path)
     assert main(arguments + ["--json", "-"]) == 2
@@ -219,12 +238,12 @@ def test_huge_integer_design_is_input_error_not_traceback(capsys):
 
 
 def test_derived_fuse_overflow_is_input_error(tmp_path, capsys):
-    module = json.loads((EXAMPLE / "module.json").read_text())
+    module = json.loads((EXAMPLE / "module.json").read_text(encoding="utf-8"))
     module.update(isc=1.3e308, imp=1, pmax_stc=31.4, alpha_isc=0)
-    site = json.loads((EXAMPLE / "site.json").read_text())
+    site = json.loads((EXAMPLE / "site.json").read_text(encoding="utf-8"))
     site.update(tmin=0, thigh=25, typical_cell_temperature=25, fixed_delta_t=0)
     for name, data in (("module", module), ("site", site)):
-        (tmp_path / (name + ".json")).write_text(json.dumps(data))
+        (tmp_path / (name + ".json")).write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
     args = PASS.copy()
     for name in ("module", "site"):
         args[args.index("--" + name) + 1] = str(tmp_path / (name + ".json"))
