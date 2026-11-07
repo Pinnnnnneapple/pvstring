@@ -1,0 +1,18 @@
+{
+  "name": "Generic 550W 144-cell bifacial (illustrative)",
+  "pmax_stc": 550,
+  "voc": 49.5,
+  "isc": 13.9,
+  "vmp": 41.8,
+  "imp": 13.1579,
+  "beta_voc": "-0.27%/°C",
+  "alpha_isc": "0.05%/°C",
+  "gamma_pmax": "-0.35%/°C",
+  "gamma_vmp": "-0.32%/°C",
+  "noct": 45,
+  "nmot": null,
+  "bifacial": true,
+  "bifaciality": 0.7,
+  "max_system_voltage": 1500,
+  "max_series_fuse_rating": 30
+}

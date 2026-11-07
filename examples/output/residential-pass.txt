@@ -1,0 +1,24 @@
+pvstring — PASS
+Design: 8 modules/string; strings/MPPT 1,1
+DC: 6.560 kW | AC: 5.000 kW | ILR: 1.312
+Hot cell: 64.25 °C | String range: 5–14
+
+PASS  Cold Voc / inverter maximum: 333.044 (limit 600)
+PASS  Cold Voc / module system voltage: 333.044 (limit 1000)
+PASS  Hot EOL Vmp / MPPT minimum: 208.667 (limit 120)
+PASS  Cold Vmp / MPPT maximum: 285.765 (limit 550)
+PASS  Start voltage: 266.777 (limit 120)
+PASS  Typical Vmp / full-power window: 235.123 (limit [180, 480])
+PASS  NEC table comparison: 352.112 (limit comparison only (V/string))
+PASS  MPPT 1 string capacity: 1 (limit 2)
+PASS  MPPT 1 maximum Isc: 17.716 (limit 25)
+PASS  MPPT 1 operating current: 13.314 (limit 16)
+PASS  MPPT 1 series fusing: 1 (limit 3 parallel strings trigger simplified fuse rule)
+PASS  MPPT 2 string capacity: 1 (limit 2)
+PASS  MPPT 2 maximum Isc: 17.716 (limit 25)
+PASS  MPPT 2 operating current: 13.314 (limit 16)
+PASS  MPPT 2 series fusing: 1 (limit 3 parallel strings trigger simplified fuse rule)
+PASS  Maximum DC power: 6560 (limit 7500)
+PASS  DC/AC ratio (ILR): 1.312 (limit [1.1, 1.35])
+
+Design aid only. Verify the original manufacturer datasheets and tools, equipment listing instructions, and local code with the authority having jurisdiction. Obtain licensed professional sign-off before construction. PASS is not certification.

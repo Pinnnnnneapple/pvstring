@@ -1,0 +1,16 @@
+{
+  "name": "Generic 5kW 2-MPPT string inverter (illustrative)",
+  "max_dc_voltage": 600,
+  "start_voltage": 120,
+  "mppt_min": 120,
+  "mppt_max": 550,
+  "full_power_mppt_min": 180,
+  "full_power_mppt_max": 480,
+  "nominal_dc_voltage": 300,
+  "num_mppts": 2,
+  "max_input_current_per_mppt": 16,
+  "max_isc_per_mppt": 25,
+  "strings_per_mppt": 2,
+  "max_dc_power": 7500,
+  "ac_rated_power": 5000
+}

@@ -1,0 +1,28 @@
+pvstring — FAIL
+Design: 16 modules/string; strings/MPPT 1,1
+DC: 13.120 kW | AC: 5.000 kW | ILR: 2.624
+Hot cell: 64.25 °C | String range: 5–14
+
+FAIL  Cold Voc / inverter maximum: 666.088 (limit 600)
+      V/string at cold design temperature; manufacturer coefficient method. Dawn cell temperature is approximated by ambient.
+PASS  Cold Voc / module system voltage: 666.088 (limit 1000)
+PASS  Hot EOL Vmp / MPPT minimum: 417.334 (limit 120)
+FAIL  Cold Vmp / MPPT maximum: 571.53 (limit 550)
+      V/string at cold design temperature must stay within the operating tracking window.
+PASS  Start voltage: 533.554 (limit 120)
+PASS  Typical Vmp / full-power window: 470.246 (limit [180, 480])
+PASS  NEC table comparison: 704.224 (limit comparison only (V/string))
+PASS  MPPT 1 string capacity: 1 (limit 2)
+PASS  MPPT 1 maximum Isc: 17.716 (limit 25)
+PASS  MPPT 1 operating current: 13.314 (limit 16)
+PASS  MPPT 1 series fusing: 1 (limit 3 parallel strings trigger simplified fuse rule)
+PASS  MPPT 2 string capacity: 1 (limit 2)
+PASS  MPPT 2 maximum Isc: 17.716 (limit 25)
+PASS  MPPT 2 operating current: 13.314 (limit 16)
+PASS  MPPT 2 series fusing: 1 (limit 3 parallel strings trigger simplified fuse rule)
+FAIL  Maximum DC power: 13120 (limit 7500)
+      Installed front-side STC nameplate W versus inverter permitted array power. Bifacial energy gain is not added to STC nameplate power.
+WARN  DC/AC ratio (ILR): 2.624 (limit [1.1, 1.35])
+      STC DC W / AC rated W. The typical 1.10–1.35 screening band is project-dependent, not a code requirement.
+
+Design aid only. Verify the original manufacturer datasheets and tools, equipment listing instructions, and local code with the authority having jurisdiction. Obtain licensed professional sign-off before construction. PASS is not certification.

@@ -1,0 +1,16 @@
+{
+  "name": "Generic 100kW 1500V 10-MPPT inverter (illustrative)",
+  "max_dc_voltage": 1500,
+  "start_voltage": 550,
+  "mppt_min": 500,
+  "mppt_max": 1450,
+  "full_power_mppt_min": 600,
+  "full_power_mppt_max": 1200,
+  "nominal_dc_voltage": 900,
+  "num_mppts": 10,
+  "max_input_current_per_mppt": 32,
+  "max_isc_per_mppt": 50,
+  "strings_per_mppt": 2,
+  "max_dc_power": 150000,
+  "ac_rated_power": 100000
+}

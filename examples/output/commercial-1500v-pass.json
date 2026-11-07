@@ -1,0 +1,490 @@
+{
+  "module": {
+    "name": "Generic 550W 144-cell bifacial (illustrative)",
+    "pmax_stc": 550,
+    "voc": 49.5,
+    "isc": 13.9,
+    "vmp": 41.8,
+    "imp": 13.1579,
+    "beta_voc": "-0.27%/°C",
+    "alpha_isc": "0.05%/°C",
+    "gamma_pmax": "-0.35%/°C",
+    "gamma_vmp": "-0.32%/°C",
+    "noct": 45,
+    "nmot": null,
+    "bifacial": true,
+    "bifaciality": 0.7,
+    "max_system_voltage": 1500,
+    "max_series_fuse_rating": 30
+  },
+  "inverter": {
+    "name": "Generic 100kW 1500V 10-MPPT inverter (illustrative)",
+    "max_dc_voltage": 1500,
+    "start_voltage": 550,
+    "mppt_min": 500,
+    "mppt_max": 1450,
+    "full_power_mppt_min": 600,
+    "full_power_mppt_max": 1200,
+    "nominal_dc_voltage": 900,
+    "num_mppts": 10,
+    "max_input_current_per_mppt": 32,
+    "max_isc_per_mppt": 50,
+    "strings_per_mppt": 2,
+    "max_dc_power": 150000,
+    "ac_rated_power": 100000
+  },
+  "site": {
+    "name": "Illustrative 1500 V commercial site (not a measured station)",
+    "tmin": -18,
+    "thigh": 35,
+    "irradiance": 1000.0,
+    "rear_irradiance_ratio": 0.15,
+    "altitude": null,
+    "racking": null,
+    "fixed_delta_t": null,
+    "typical_cell_temperature": 45.0,
+    "degradation_percent_per_year": 0.5,
+    "design_years": 10
+  },
+  "array": {
+    "modules_per_string": 22,
+    "strings_per_mppt": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "fuse_rating": null
+  },
+  "metrics": {
+    "cell_temperature_hot": 66.25,
+    "voc_cold": 55.246950000000005,
+    "voc_cold_table": 58.41,
+    "voc_hot": 43.9869375,
+    "vmp_hot": 36.282399999999996,
+    "vmp_hot_eol": 34.46827999999999,
+    "vmp_cold": 47.55168,
+    "vmp_typical": 39.12479999999999,
+    "isc_hot": 15.676289687499999,
+    "isc_design": 19.595362109375,
+    "imp_hot": 14.839356264687499,
+    "dc_power": 121000,
+    "dc_ac_ratio": 1.21
+  },
+  "limits": {
+    "min_modules": 15,
+    "max_modules": 27,
+    "recommended_min": 16,
+    "recommended_max": 27
+  },
+  "checks": [
+    {
+      "name": "Cold Voc / inverter maximum",
+      "status": "PASS",
+      "value": 1215.4329,
+      "limit": 1500,
+      "explanation": "V/string at cold design temperature; manufacturer coefficient method. Dawn cell temperature is approximated by ambient.",
+      "reference": "NEC 2023 690.7(A)(1); inverter datasheet"
+    },
+    {
+      "name": "Cold Voc / module system voltage",
+      "status": "PASS",
+      "value": 1215.4329,
+      "limit": 1500,
+      "explanation": "V/string must respect the module insulation/system-voltage rating as well as the inverter.",
+      "reference": "Module datasheet; NEC 2023 690.7"
+    },
+    {
+      "name": "Hot EOL Vmp / MPPT minimum",
+      "status": "PASS",
+      "value": 758.3021599999998,
+      "limit": 500,
+      "explanation": "V/string after the explicit linear voltage-degradation allowance; minimum operating tracking voltage.",
+      "reference": "Inverter datasheet; design allowance"
+    },
+    {
+      "name": "Cold Vmp / MPPT maximum",
+      "status": "PASS",
+      "value": 1046.13696,
+      "limit": 1450,
+      "explanation": "V/string at cold design temperature must stay within the operating tracking window.",
+      "reference": "Inverter datasheet"
+    },
+    {
+      "name": "Start voltage",
+      "status": "PASS",
+      "value": 967.7126250000001,
+      "limit": 550,
+      "explanation": "Hot open-circuit V/string screens restart capability. Low-light start behavior requires manufacturer verification.",
+      "reference": "Inverter datasheet; simplified startup screen"
+    },
+    {
+      "name": "Typical Vmp / full-power window",
+      "status": "PASS",
+      "value": 860.7455999999999,
+      "limit": [
+        600,
+        1200
+      ],
+      "explanation": "V/string at the assumed typical cell temperature; full-power window is advisory and distinct from the operating window.",
+      "reference": "Inverter datasheet"
+    },
+    {
+      "name": "NEC table comparison",
+      "status": "PASS",
+      "value": 1285.02,
+      "limit": "comparison only (V/string)",
+      "explanation": "Table result is informative. The available manufacturer coefficient controls this design, so methods are not mixed.",
+      "reference": "Per NEC Table 690.7(A)"
+    },
+    {
+      "name": "MPPT 1 string capacity",
+      "status": "PASS",
+      "value": 1,
+      "limit": 2,
+      "explanation": "Parallel string count versus physical/manufacturer input capacity; 0 denotes unused.",
+      "reference": "Inverter datasheet"
+    },
+    {
+      "name": "MPPT 1 maximum Isc",
+      "status": "PASS",
+      "value": 19.595362109375,
+      "limit": 50,
+      "explanation": "A/MPPT: temperature- and irradiance-corrected Isc × bifacial gain × 1.25 × parallel strings. Conservative comparison to inverter short-circuit rating.",
+      "reference": "NEC 2023 690.8(A)(1); inverter datasheet"
+    },
+    {
+      "name": "MPPT 1 operating current",
+      "status": "PASS",
+      "value": 14.839356264687499,
+      "limit": 32,
+      "explanation": "A/MPPT: Imp uses the Isc temperature/irradiance multiplier as a screening proxy. Exceeding operating input current may clip production.",
+      "reference": "Inverter datasheet; Imp model assumption"
+    },
+    {
+      "name": "MPPT 1 series fusing",
+      "status": "PASS",
+      "value": 1,
+      "limit": "3 parallel strings trigger simplified fuse rule",
+      "explanation": "No series fuse triggered by this screen. Manufacturer instructions and inverter backfeed may still require protection.",
+      "reference": "NEC 2023 690.9 (simplified)"
+    },
+    {
+      "name": "MPPT 2 string capacity",
+      "status": "PASS",
+      "value": 1,
+      "limit": 2,
+      "explanation": "Parallel string count versus physical/manufacturer input capacity; 0 denotes unused.",
+      "reference": "Inverter datasheet"
+    },
+    {
+      "name": "MPPT 2 maximum Isc",
+      "status": "PASS",
+      "value": 19.595362109375,
+      "limit": 50,
+      "explanation": "A/MPPT: temperature- and irradiance-corrected Isc × bifacial gain × 1.25 × parallel strings. Conservative comparison to inverter short-circuit rating.",
+      "reference": "NEC 2023 690.8(A)(1); inverter datasheet"
+    },
+    {
+      "name": "MPPT 2 operating current",
+      "status": "PASS",
+      "value": 14.839356264687499,
+      "limit": 32,
+      "explanation": "A/MPPT: Imp uses the Isc temperature/irradiance multiplier as a screening proxy. Exceeding operating input current may clip production.",
+      "reference": "Inverter datasheet; Imp model assumption"
+    },
+    {
+      "name": "MPPT 2 series fusing",
+      "status": "PASS",
+      "value": 1,
+      "limit": "3 parallel strings trigger simplified fuse rule",
+      "explanation": "No series fuse triggered by this screen. Manufacturer instructions and inverter backfeed may still require protection.",
+      "reference": "NEC 2023 690.9 (simplified)"
+    },
+    {
+      "name": "MPPT 3 string capacity",
+      "status": "PASS",
+      "value": 1,
+      "limit": 2,
+      "explanation": "Parallel string count versus physical/manufacturer input capacity; 0 denotes unused.",
+      "reference": "Inverter datasheet"
+    },
+    {
+      "name": "MPPT 3 maximum Isc",
+      "status": "PASS",
+      "value": 19.595362109375,
+      "limit": 50,
+      "explanation": "A/MPPT: temperature- and irradiance-corrected Isc × bifacial gain × 1.25 × parallel strings. Conservative comparison to inverter short-circuit rating.",
+      "reference": "NEC 2023 690.8(A)(1); inverter datasheet"
+    },
+    {
+      "name": "MPPT 3 operating current",
+      "status": "PASS",
+      "value": 14.839356264687499,
+      "limit": 32,
+      "explanation": "A/MPPT: Imp uses the Isc temperature/irradiance multiplier as a screening proxy. Exceeding operating input current may clip production.",
+      "reference": "Inverter datasheet; Imp model assumption"
+    },
+    {
+      "name": "MPPT 3 series fusing",
+      "status": "PASS",
+      "value": 1,
+      "limit": "3 parallel strings trigger simplified fuse rule",
+      "explanation": "No series fuse triggered by this screen. Manufacturer instructions and inverter backfeed may still require protection.",
+      "reference": "NEC 2023 690.9 (simplified)"
+    },
+    {
+      "name": "MPPT 4 string capacity",
+      "status": "PASS",
+      "value": 1,
+      "limit": 2,
+      "explanation": "Parallel string count versus physical/manufacturer input capacity; 0 denotes unused.",
+      "reference": "Inverter datasheet"
+    },
+    {
+      "name": "MPPT 4 maximum Isc",
+      "status": "PASS",
+      "value": 19.595362109375,
+      "limit": 50,
+      "explanation": "A/MPPT: temperature- and irradiance-corrected Isc × bifacial gain × 1.25 × parallel strings. Conservative comparison to inverter short-circuit rating.",
+      "reference": "NEC 2023 690.8(A)(1); inverter datasheet"
+    },
+    {
+      "name": "MPPT 4 operating current",
+      "status": "PASS",
+      "value": 14.839356264687499,
+      "limit": 32,
+      "explanation": "A/MPPT: Imp uses the Isc temperature/irradiance multiplier as a screening proxy. Exceeding operating input current may clip production.",
+      "reference": "Inverter datasheet; Imp model assumption"
+    },
+    {
+      "name": "MPPT 4 series fusing",
+      "status": "PASS",
+      "value": 1,
+      "limit": "3 parallel strings trigger simplified fuse rule",
+      "explanation": "No series fuse triggered by this screen. Manufacturer instructions and inverter backfeed may still require protection.",
+      "reference": "NEC 2023 690.9 (simplified)"
+    },
+    {
+      "name": "MPPT 5 string capacity",
+      "status": "PASS",
+      "value": 1,
+      "limit": 2,
+      "explanation": "Parallel string count versus physical/manufacturer input capacity; 0 denotes unused.",
+      "reference": "Inverter datasheet"
+    },
+    {
+      "name": "MPPT 5 maximum Isc",
+      "status": "PASS",
+      "value": 19.595362109375,
+      "limit": 50,
+      "explanation": "A/MPPT: temperature- and irradiance-corrected Isc × bifacial gain × 1.25 × parallel strings. Conservative comparison to inverter short-circuit rating.",
+      "reference": "NEC 2023 690.8(A)(1); inverter datasheet"
+    },
+    {
+      "name": "MPPT 5 operating current",
+      "status": "PASS",
+      "value": 14.839356264687499,
+      "limit": 32,
+      "explanation": "A/MPPT: Imp uses the Isc temperature/irradiance multiplier as a screening proxy. Exceeding operating input current may clip production.",
+      "reference": "Inverter datasheet; Imp model assumption"
+    },
+    {
+      "name": "MPPT 5 series fusing",
+      "status": "PASS",
+      "value": 1,
+      "limit": "3 parallel strings trigger simplified fuse rule",
+      "explanation": "No series fuse triggered by this screen. Manufacturer instructions and inverter backfeed may still require protection.",
+      "reference": "NEC 2023 690.9 (simplified)"
+    },
+    {
+      "name": "MPPT 6 string capacity",
+      "status": "PASS",
+      "value": 1,
+      "limit": 2,
+      "explanation": "Parallel string count versus physical/manufacturer input capacity; 0 denotes unused.",
+      "reference": "Inverter datasheet"
+    },
+    {
+      "name": "MPPT 6 maximum Isc",
+      "status": "PASS",
+      "value": 19.595362109375,
+      "limit": 50,
+      "explanation": "A/MPPT: temperature- and irradiance-corrected Isc × bifacial gain × 1.25 × parallel strings. Conservative comparison to inverter short-circuit rating.",
+      "reference": "NEC 2023 690.8(A)(1); inverter datasheet"
+    },
+    {
+      "name": "MPPT 6 operating current",
+      "status": "PASS",
+      "value": 14.839356264687499,
+      "limit": 32,
+      "explanation": "A/MPPT: Imp uses the Isc temperature/irradiance multiplier as a screening proxy. Exceeding operating input current may clip production.",
+      "reference": "Inverter datasheet; Imp model assumption"
+    },
+    {
+      "name": "MPPT 6 series fusing",
+      "status": "PASS",
+      "value": 1,
+      "limit": "3 parallel strings trigger simplified fuse rule",
+      "explanation": "No series fuse triggered by this screen. Manufacturer instructions and inverter backfeed may still require protection.",
+      "reference": "NEC 2023 690.9 (simplified)"
+    },
+    {
+      "name": "MPPT 7 string capacity",
+      "status": "PASS",
+      "value": 1,
+      "limit": 2,
+      "explanation": "Parallel string count versus physical/manufacturer input capacity; 0 denotes unused.",
+      "reference": "Inverter datasheet"
+    },
+    {
+      "name": "MPPT 7 maximum Isc",
+      "status": "PASS",
+      "value": 19.595362109375,
+      "limit": 50,
+      "explanation": "A/MPPT: temperature- and irradiance-corrected Isc × bifacial gain × 1.25 × parallel strings. Conservative comparison to inverter short-circuit rating.",
+      "reference": "NEC 2023 690.8(A)(1); inverter datasheet"
+    },
+    {
+      "name": "MPPT 7 operating current",
+      "status": "PASS",
+      "value": 14.839356264687499,
+      "limit": 32,
+      "explanation": "A/MPPT: Imp uses the Isc temperature/irradiance multiplier as a screening proxy. Exceeding operating input current may clip production.",
+      "reference": "Inverter datasheet; Imp model assumption"
+    },
+    {
+      "name": "MPPT 7 series fusing",
+      "status": "PASS",
+      "value": 1,
+      "limit": "3 parallel strings trigger simplified fuse rule",
+      "explanation": "No series fuse triggered by this screen. Manufacturer instructions and inverter backfeed may still require protection.",
+      "reference": "NEC 2023 690.9 (simplified)"
+    },
+    {
+      "name": "MPPT 8 string capacity",
+      "status": "PASS",
+      "value": 1,
+      "limit": 2,
+      "explanation": "Parallel string count versus physical/manufacturer input capacity; 0 denotes unused.",
+      "reference": "Inverter datasheet"
+    },
+    {
+      "name": "MPPT 8 maximum Isc",
+      "status": "PASS",
+      "value": 19.595362109375,
+      "limit": 50,
+      "explanation": "A/MPPT: temperature- and irradiance-corrected Isc × bifacial gain × 1.25 × parallel strings. Conservative comparison to inverter short-circuit rating.",
+      "reference": "NEC 2023 690.8(A)(1); inverter datasheet"
+    },
+    {
+      "name": "MPPT 8 operating current",
+      "status": "PASS",
+      "value": 14.839356264687499,
+      "limit": 32,
+      "explanation": "A/MPPT: Imp uses the Isc temperature/irradiance multiplier as a screening proxy. Exceeding operating input current may clip production.",
+      "reference": "Inverter datasheet; Imp model assumption"
+    },
+    {
+      "name": "MPPT 8 series fusing",
+      "status": "PASS",
+      "value": 1,
+      "limit": "3 parallel strings trigger simplified fuse rule",
+      "explanation": "No series fuse triggered by this screen. Manufacturer instructions and inverter backfeed may still require protection.",
+      "reference": "NEC 2023 690.9 (simplified)"
+    },
+    {
+      "name": "MPPT 9 string capacity",
+      "status": "PASS",
+      "value": 1,
+      "limit": 2,
+      "explanation": "Parallel string count versus physical/manufacturer input capacity; 0 denotes unused.",
+      "reference": "Inverter datasheet"
+    },
+    {
+      "name": "MPPT 9 maximum Isc",
+      "status": "PASS",
+      "value": 19.595362109375,
+      "limit": 50,
+      "explanation": "A/MPPT: temperature- and irradiance-corrected Isc × bifacial gain × 1.25 × parallel strings. Conservative comparison to inverter short-circuit rating.",
+      "reference": "NEC 2023 690.8(A)(1); inverter datasheet"
+    },
+    {
+      "name": "MPPT 9 operating current",
+      "status": "PASS",
+      "value": 14.839356264687499,
+      "limit": 32,
+      "explanation": "A/MPPT: Imp uses the Isc temperature/irradiance multiplier as a screening proxy. Exceeding operating input current may clip production.",
+      "reference": "Inverter datasheet; Imp model assumption"
+    },
+    {
+      "name": "MPPT 9 series fusing",
+      "status": "PASS",
+      "value": 1,
+      "limit": "3 parallel strings trigger simplified fuse rule",
+      "explanation": "No series fuse triggered by this screen. Manufacturer instructions and inverter backfeed may still require protection.",
+      "reference": "NEC 2023 690.9 (simplified)"
+    },
+    {
+      "name": "MPPT 10 string capacity",
+      "status": "PASS",
+      "value": 1,
+      "limit": 2,
+      "explanation": "Parallel string count versus physical/manufacturer input capacity; 0 denotes unused.",
+      "reference": "Inverter datasheet"
+    },
+    {
+      "name": "MPPT 10 maximum Isc",
+      "status": "PASS",
+      "value": 19.595362109375,
+      "limit": 50,
+      "explanation": "A/MPPT: temperature- and irradiance-corrected Isc × bifacial gain × 1.25 × parallel strings. Conservative comparison to inverter short-circuit rating.",
+      "reference": "NEC 2023 690.8(A)(1); inverter datasheet"
+    },
+    {
+      "name": "MPPT 10 operating current",
+      "status": "PASS",
+      "value": 14.839356264687499,
+      "limit": 32,
+      "explanation": "A/MPPT: Imp uses the Isc temperature/irradiance multiplier as a screening proxy. Exceeding operating input current may clip production.",
+      "reference": "Inverter datasheet; Imp model assumption"
+    },
+    {
+      "name": "MPPT 10 series fusing",
+      "status": "PASS",
+      "value": 1,
+      "limit": "3 parallel strings trigger simplified fuse rule",
+      "explanation": "No series fuse triggered by this screen. Manufacturer instructions and inverter backfeed may still require protection.",
+      "reference": "NEC 2023 690.9 (simplified)"
+    },
+    {
+      "name": "Maximum DC power",
+      "status": "PASS",
+      "value": 121000,
+      "limit": 150000,
+      "explanation": "Installed front-side STC nameplate W versus inverter permitted array power. Bifacial energy gain is not added to STC nameplate power.",
+      "reference": "Inverter datasheet"
+    },
+    {
+      "name": "DC/AC ratio (ILR)",
+      "status": "PASS",
+      "value": 1.21,
+      "limit": [
+        1.1,
+        1.35
+      ],
+      "explanation": "STC DC W / AC rated W. The typical 1.10–1.35 screening band is project-dependent, not a code requirement.",
+      "reference": "Design guidance"
+    }
+  ],
+  "schema_version": 1,
+  "status": "PASS",
+  "exit_code": 0,
+  "disclaimer": "Design aid only. Verify the original manufacturer datasheets and tools, equipment listing instructions, and local code with the authority having jurisdiction. Obtain licensed professional sign-off before construction. PASS is not certification."
+}
